@@ -8,7 +8,6 @@ public class GoogleAnalyticsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GoogleAnalyticsApplication.class, args);
-
 	}
 
 }
