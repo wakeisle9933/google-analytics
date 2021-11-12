@@ -8,10 +8,12 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.analyticsreporting.v4.AnalyticsReporting;
 import com.google.api.services.analyticsreporting.v4.AnalyticsReportingScopes;
 import com.google.api.services.analyticsreporting.v4.model.GetReportsResponse;
+import com.google.googleanalytics.form.ConnectionForm;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,12 +29,17 @@ public class AnalyticsConnection {
     public static final String APPLICATION_NAME = "Analytics Report";
     public static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     public static final String KEY_FILE_LOCATION = "";
-    public static final String VIEW_ID = "";
+    public static String VIEW_ID = "";
     public static AnalyticsReporting service;
 
-    @GetMapping("connect")
-    public String analyticsConnect() {
+    // Google Analytics API VIEW_ID 설정 및 연동처리
+    @PostMapping("connect")
+    public String analyticsConnectPost(ConnectionForm form) {
         try {
+            if(form.getViewId().isEmpty()) {
+                return "VIEW_ID가 없습니다";
+            }
+            VIEW_ID = form.getViewId(); // VIEW_ID는 API 호출 시 사용됨
             service = initializeAnalyticsReporting();
             return "연결 성공";
         } catch (Exception e) {

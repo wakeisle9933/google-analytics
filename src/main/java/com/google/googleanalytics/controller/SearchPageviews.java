@@ -50,6 +50,7 @@ public class SearchPageviews {
         GetReportsResponse response = AnalyticsConnection.service.reports().batchGet(getReport).execute();
         // response 콘솔에 출력
         printResponse(response);
+
     }
 
     // 결과 출력
@@ -74,7 +75,7 @@ public class SearchPageviews {
                 }
 
                 for (int j = 0; j < metrics.size(); j++) {
-                    System.out.print("Date Range (" + j + "): ");
+                    System.out.println("Date Range (" + j + "): ");
                     DateRangeValues values = metrics.get(j);
                     for (int k = 0; k < values.getValues().size() && k < metricHeaders.size(); k++) {
                         System.out.println(metricHeaders.get(k).getName() + ": " + values.getValues().get(k));
