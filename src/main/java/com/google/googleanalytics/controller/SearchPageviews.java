@@ -14,6 +14,7 @@ import org.springframework.web.servlet.View;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class SearchPageviews {
 
         List<OrderBy> orderBys = new ArrayList<>();
         OrderBy orderBy = new OrderBy().setFieldName("pageviews")
-                                       .setSortOrder("ascending");
+                                       .setSortOrder("descending");
         orderBys.add(orderBy);
 
         // ReportRequest 객체 생성.
@@ -60,6 +61,52 @@ public class SearchPageviews {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("Result");
         modelAndView.addObject("response", response.getReports());
+
+        LinkedList<String> nameList = new LinkedList<>();
+        LinkedList<String> pageviewsList = new LinkedList<>();
+        LinkedList<String> dimensionHeaderList = new LinkedList<>();
+        LinkedList<String> dimensionList = new LinkedList<>();
+
+        for(Report report: response.getReports()) {
+
+            ColumnHeader header = report.getColumnHeader();
+            List<String> dimensionHeaders = header.getDimensions();
+            List<MetricHeaderEntry> metricHeaders = header.getMetricHeader().getMetricHeaderEntries();
+            List<ReportRow> rows = report.getData().getRows();
+
+            System.out.println(header);
+            System.out.println(dimensionHeaders);
+            System.out.println(metricHeaders);
+            System.out.println(rows);
+
+            for(ReportRow row: rows) {
+                List<String> dimensions = row.getDimensions();
+                List<DateRangeValues> metrics = row.getMetrics();
+
+                for (int i = 0; i < dimensionHeaders.size() && i < dimensions.size(); i++) {
+                    System.out.println(dimensionHeaders.get(i) + ": " + dimensions.get(i));
+                    dimensionHeaderList.add(dimensionHeaders.get(i));
+                    dimensionList.add(dimensions.get(i));
+                }
+
+                for (int j = 0; j < metrics.size(); j++) {
+                    DateRangeValues values = metrics.get(j);
+                    for (int k = 0; k < values.getValues().size() && k < metricHeaders.size(); k++) {
+                        nameList.add(metricHeaders.get(k).getName());
+                        pageviewsList.add(values.getValues().get(k));
+                    }
+                }
+            }
+
+            System.out.println("LINE");
+            System.out.println(nameList);
+            System.out.println(pageviewsList);
+            System.out.println(dimensionHeaderList);
+            System.out.println(dimensionList);
+
+        }
+
+        modelAndView.addObject("dimensionList", dimensionList);
 
         return modelAndView;
     }

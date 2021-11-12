@@ -25,7 +25,7 @@ public class AnalyticsConnection {
 
     public static final String APPLICATION_NAME = "Analytics Report";
     public static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    public static final String KEY_FILE_LOCATION = "";
+    public static final String KEY_FILE_LOCATION = "C:\\workspace\\analytics-web\\src\\main\\resources\\userdata\\analytics.json";
     public static String VIEW_ID = "";
     public static AnalyticsReporting service;
 
