@@ -2,9 +2,14 @@ package com.google.googleanalytics.controller;
 
 import com.google.api.services.analyticsreporting.v4.AnalyticsReporting;
 import com.google.api.services.analyticsreporting.v4.model.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +21,7 @@ import java.util.List;
 public class SearchPageviews {
 
     @GetMapping("searchTotalPageviews")
-    public void SearchTotalPageviews() throws IOException {
+    public ModelAndView SearchTotalPageviews() throws IOException {
         // 날짜 범위 설정
         DateRange dateRange = new DateRange();
         dateRange.setStartDate("7DaysAgo");
@@ -38,6 +43,7 @@ public class SearchPageviews {
                                                    .setDateRanges(Arrays.asList(dateRange))
                                                    .setMetrics(Arrays.asList(pageviews))
                                                    .setDimensions(Arrays.asList(pageTitle))
+                                                   .setPageSize(10)
                                                    .setOrderBys(orderBys);
 
         ArrayList<ReportRequest> requests = new ArrayList<ReportRequest>();
@@ -49,8 +55,13 @@ public class SearchPageviews {
         // batchGet 메소드 생성해서 response 받아오기
         GetReportsResponse response = AnalyticsConnection.service.reports().batchGet(getReport).execute();
         // response 콘솔에 출력
-        printResponse(response);
+        // printResponse(response);
 
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("Result");
+        modelAndView.addObject("response", response.getReports());
+
+        return modelAndView;
     }
 
     // 결과 출력

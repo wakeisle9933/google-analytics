@@ -12,16 +12,13 @@ import com.google.googleanalytics.form.ConnectionForm;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-@RestController
+@Controller
 @Getter
 @RequestMapping("/")
 public class AnalyticsConnection {
@@ -36,15 +33,12 @@ public class AnalyticsConnection {
     @PostMapping("connect")
     public String analyticsConnectPost(ConnectionForm form) {
         try {
-            if(form.getViewId().isEmpty()) {
-                return "VIEW_ID가 없습니다";
-            }
             VIEW_ID = form.getViewId(); // VIEW_ID는 API 호출 시 사용됨
             service = initializeAnalyticsReporting();
-            return "연결 성공";
+            return "SearchMain";
         } catch (Exception e) {
             e.printStackTrace();
-            return "연결 실패";
+            return "CredentialErrorMain";
         }
     }
 
@@ -60,6 +54,5 @@ public class AnalyticsConnection {
                                      .setApplicationName(APPLICATION_NAME)
                                      .build();
     }
-
 
 }
