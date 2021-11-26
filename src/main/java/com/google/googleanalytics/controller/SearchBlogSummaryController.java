@@ -37,4 +37,6 @@ public class SearchBlogSummaryController {
 
     // 카테고리 별 조회
 
+    // 블로그 내부 검색 리스트 조회
+
 }

@@ -1,10 +1,10 @@
-package com.google.googleanalytics.form;
+package com.google.googleanalytics.domain;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ConnectionForm {
+public class ConnectionModel {
     private String viewId;
 }

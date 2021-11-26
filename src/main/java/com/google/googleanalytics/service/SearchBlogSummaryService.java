@@ -56,7 +56,7 @@ public class SearchBlogSummaryService {
                                                    .setDateRanges(Arrays.asList(dateRange))
                                                    .setMetrics(findMetrics)
                                                    .setDimensions(findDimension)
-                                                   .setPageSize(1000)
+                                                   .setPageSize(100000)
                                                    .setOrderBys(orderBys);
 
         ArrayList<ReportRequest> requests = new ArrayList<>();

@@ -7,10 +7,8 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.analyticsreporting.v4.AnalyticsReporting;
 import com.google.api.services.analyticsreporting.v4.AnalyticsReportingScopes;
-import com.google.api.services.analyticsreporting.v4.model.GetReportsResponse;
-import com.google.googleanalytics.form.ConnectionForm;
+import com.google.googleanalytics.domain.ConnectionModel;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +29,7 @@ public class AnalyticsConnectionController {
 
     // Google Analytics API VIEW_ID 설정 및 연동처리
     @PostMapping("connect")
-    public String analyticsConnectPost(ConnectionForm form) {
+    public String analyticsConnectPost(ConnectionModel form) {
         try {
             VIEW_ID = form.getViewId(); // VIEW_ID는 API 호출 시 사용됨
             service = initializeAnalyticsReporting();
