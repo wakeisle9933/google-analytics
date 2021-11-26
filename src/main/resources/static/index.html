@@ -1,5 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+    table {
+        border: 1px solid #444444;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #444444;
+    }
+</style>
 <head>
     <meta charset="UTF-8">
     <title>Analytics Report</title>
@@ -11,7 +20,25 @@
                 <input type="text" id="viewId" name="viewId">
                 <button type="submit">연결</button>
             </div>
-        </form>
+        </form><br>
+
+        <table>
+            <thead>
+            <tr>
+                <th>순번</th>
+                <th>VIEW ID</th>
+                <th>비고</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>test1</td>
+                <td>test2</td>
+                <td>test3</td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
 
 </head>

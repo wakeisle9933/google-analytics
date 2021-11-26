@@ -21,7 +21,7 @@ import java.security.GeneralSecurityException;
 @Controller
 @Getter
 @RequestMapping("/")
-public class AnalyticsConnection {
+public class AnalyticsConnectionController {
 
     public static final String APPLICATION_NAME = "Analytics Report";
     public static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();

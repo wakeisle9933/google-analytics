@@ -1,15 +1,10 @@
 package com.google.googleanalytics.controller;
 
-import com.google.api.services.analyticsreporting.v4.AnalyticsReporting;
 import com.google.api.services.analyticsreporting.v4.model.*;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/search")
-public class SearchPageviews {
+public class SearchBlogSummaryController {
 
     @GetMapping("searchTotalPageviews")
     public ModelAndView SearchTotalPageviews() throws IOException {
@@ -29,8 +24,15 @@ public class SearchPageviews {
         dateRange.setEndDate("today");
 
         // Metrics(조회할 컬럼) 객체 생성
+        List<Metric> findMetrics = new ArrayList<>();
         Metric pageviews = new Metric().setExpression("ga:pageviews")
-                                       .setAlias("pageviews");
+                                        .setAlias("pageviews");
+
+        Metric users = new Metric().setExpression("ga:users")
+                .setAlias("users");
+
+        findMetrics.add(pageviews);
+        findMetrics.add(users);
 
         Dimension pageTitle = new Dimension().setName("ga:pageTitle");
 
@@ -40,21 +42,21 @@ public class SearchPageviews {
         orderBys.add(orderBy);
 
         // ReportRequest 객체 생성.
-        ReportRequest request = new ReportRequest().setViewId(AnalyticsConnection.VIEW_ID)
+        ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
                                                    .setDateRanges(Arrays.asList(dateRange))
-                                                   .setMetrics(Arrays.asList(pageviews))
+                                                   .setMetrics(findMetrics)
                                                    .setDimensions(Arrays.asList(pageTitle))
                                                    .setPageSize(10)
                                                    .setOrderBys(orderBys);
 
-        ArrayList<ReportRequest> requests = new ArrayList<ReportRequest>();
+        ArrayList<ReportRequest> requests = new ArrayList<>();
         requests.add(request);
 
         // GetReportsRequest 객체 생성
         GetReportsRequest getReport = new GetReportsRequest().setReportRequests(requests);
 
         // batchGet 메소드 생성해서 response 받아오기
-        GetReportsResponse response = AnalyticsConnection.service.reports().batchGet(getReport).execute();
+        GetReportsResponse response = AnalyticsConnectionController.service.reports().batchGet(getReport).execute();
         // response 콘솔에 출력
         // printResponse(response);
 
@@ -120,7 +122,7 @@ public class SearchPageviews {
             List<ReportRow> rows = report.getData().getRows();
 
             if (rows == null) {
-                System.out.println("No data found for " + AnalyticsConnection.VIEW_ID);
+                System.out.println("No data found for " + AnalyticsConnectionController.VIEW_ID);
                 return;
             }
 
