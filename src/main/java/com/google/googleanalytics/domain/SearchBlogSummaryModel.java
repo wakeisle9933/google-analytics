@@ -12,6 +12,7 @@ import lombok.ToString;
 public class SearchBlogSummaryModel {
 
     int postNumber;
+    String pagePath;
     String postName;
     String pageViews;
     String adsenseRevenue;

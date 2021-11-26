@@ -38,7 +38,12 @@ public class SearchBlogSummaryService {
         findMetrics.add(adsenseRevenue);
         findMetrics.add(adsenseAdsClicks);
 
+        List<Dimension> findDimension = new ArrayList<>();
+        Dimension pagePath = new Dimension().setName("ga:pagePath");
         Dimension pageTitle = new Dimension().setName("ga:pageTitle");
+
+        findDimension.add(pagePath);
+        findDimension.add(pageTitle);
 
         // 정렬기준 설정
         List<OrderBy> orderBys = new ArrayList<>();
@@ -50,7 +55,7 @@ public class SearchBlogSummaryService {
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
                                                    .setDateRanges(Arrays.asList(dateRange))
                                                    .setMetrics(findMetrics)
-                                                   .setDimensions(Arrays.asList(pageTitle))
+                                                   .setDimensions(findDimension)
                                                    .setPageSize(1000)
                                                    .setOrderBys(orderBys);
 
@@ -86,7 +91,8 @@ public class SearchBlogSummaryService {
                 count++;
 
                 for (int i = 0; i < dimensionHeaders.size() && i < dimensions.size(); i++) {
-                    model.setPostName(dimensions.get(i)); // postName
+                    model.setPagePath(dimensions.get(0)); // pagePath
+                    model.setPostName(dimensions.get(1)); // postName
                 }
 
                 for (int j = 0; j < metrics.size(); j++) {
