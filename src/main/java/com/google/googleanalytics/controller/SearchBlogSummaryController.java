@@ -21,9 +21,14 @@ public class SearchBlogSummaryController {
     @Autowired
     SearchBlogSummaryService searchBlogSummaryService;
 
-    @GetMapping("searchTotalPageviews")
+    @GetMapping("searchBlogSummaryBasePageViews")
     public ModelAndView SearchBlogSummary() throws IOException {
         return searchBlogSummaryService.SearchBlogSummary();
+    }
+
+    @GetMapping("searchBlogSummaryBaseRevenue")
+    public ModelAndView SearchBlogSummaryBaseRevenue() throws IOException {
+        return searchBlogSummaryService.SearchBlogSummaryBaseRevenue();
     }
 
 }
