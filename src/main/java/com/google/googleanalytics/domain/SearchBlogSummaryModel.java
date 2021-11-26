@@ -3,16 +3,18 @@ package com.google.googleanalytics.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 public class SearchBlogSummaryModel {
 
-    int number;
-    String name;
-    int pageviews;
-    Double adsenseRevenue;
-    int adsenseAdsClicks;
+    int postNumber;
+    String postName;
+    String pageViews;
+    String adsenseRevenue;
+    String adsenseAdsClicks;
 
 }

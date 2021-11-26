@@ -1,27 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<style>
+  table {
+    width: 800px;
+    border: 1px solid #444444;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #444444;
+  }
+</style>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
     <p><a href="/SearchMain">이전 화면으로 돌아가기</a></p>
-    Result <br>
-    <span th:text="${response}"></span>
-
     <table>
         <thead>
             <tr>
                 <th>순번</th>
                 <th>제목</th>
                 <th>페이지뷰</th>
+                <th>광고 수입</th>
+                <th>광고 클릭 수</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="dimension : ${dimensionList}">
-                <td>number</td>
-                <td th:text="${dimension}"></td>
-                <td>1</td>
+            <tr th:each="summary : ${summaryModel}">
+                <td th:text="${summary.postNumber}" style="text-align: center;"></td>
+                <td th:text="${summary.postName}"></td>
+                <td th:text="${summary.pageViews}"></td>
+                <td th:text="${summary.adsenseRevenue}"></td>
+                <td th:text="${summary.adsenseAdsClicks}"></td>
             </tr>
         </tbody>
     </table>

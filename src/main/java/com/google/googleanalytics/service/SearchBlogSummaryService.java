@@ -2,11 +2,13 @@ package com.google.googleanalytics.service;
 
 import com.google.api.services.analyticsreporting.v4.model.*;
 import com.google.googleanalytics.controller.AnalyticsConnectionController;
+import com.google.googleanalytics.domain.SearchBlogSummaryModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -16,7 +18,6 @@ import java.util.List;
 public class SearchBlogSummaryService {
 
     public ModelAndView SearchBlogSummary() throws IOException {
-
         // 날짜 범위 설정
         DateRange dateRange = new DateRange();
         dateRange.setStartDate("7DaysAgo");
@@ -49,7 +50,7 @@ public class SearchBlogSummaryService {
                 .setDateRanges(Arrays.asList(dateRange))
                 .setMetrics(findMetrics)
                 .setDimensions(Arrays.asList(pageTitle))
-                .setPageSize(10)
+                .setPageSize(100)
                 .setOrderBys(orderBys);
 
         ArrayList<ReportRequest> requests = new ArrayList<>();
@@ -71,6 +72,8 @@ public class SearchBlogSummaryService {
         LinkedList<String> pageviewsList = new LinkedList<>();
         LinkedList<String> dimensionHeaderList = new LinkedList<>();
         LinkedList<String> dimensionList = new LinkedList<>();
+        // 반환할
+        LinkedList<SearchBlogSummaryModel> summaryList = new LinkedList<>();
 
         for(Report report: response.getReports()) {
 
@@ -78,44 +81,32 @@ public class SearchBlogSummaryService {
             List<String> dimensionHeaders = header.getDimensions();
             List<MetricHeaderEntry> metricHeaders = header.getMetricHeader().getMetricHeaderEntries();
             List<ReportRow> rows = report.getData().getRows();
-
-            System.out.println(header);
-            System.out.println(dimensionHeaders);
-            System.out.println(metricHeaders);
-            System.out.println(rows);
+            int count = 1;
 
             for(ReportRow row: rows) {
                 List<String> dimensions = row.getDimensions();
                 List<DateRangeValues> metrics = row.getMetrics();
+                SearchBlogSummaryModel model = new SearchBlogSummaryModel();
+                model.setPostNumber(count); // postNumber
+                count++;
 
                 for (int i = 0; i < dimensionHeaders.size() && i < dimensions.size(); i++) {
-                    System.out.println(dimensionHeaders.get(i) + ": " + dimensions.get(i));
-                    dimensionHeaderList.add(dimensionHeaders.get(i));
-                    dimensionList.add(dimensions.get(i));
+                    model.setPostName(dimensions.get(i)); // postName
                 }
 
                 for (int j = 0; j < metrics.size(); j++) {
                     DateRangeValues values = metrics.get(j);
-                    for (int k = 0; k < values.getValues().size() && k < metricHeaders.size(); k++) {
-                        nameList.add(metricHeaders.get(k).getName());
-                        pageviewsList.add(values.getValues().get(k));
-                    }
+                    model.setPageViews(values.getValues().get(0)); // pageViews
+                    model.setAdsenseRevenue(BigDecimal.valueOf(Double.parseDouble(values.getValues().get(1))).toString()); // adsenseRevenue
+                    model.setAdsenseAdsClicks(values.getValues().get(2)); // adsenseAdsClicks
                 }
+                summaryList.add(model);
             }
-
-            System.out.println("LINE");
-            System.out.println(nameList);
-            System.out.println(pageviewsList);
-            System.out.println(dimensionHeaderList);
-            System.out.println(dimensionList);
-
         }
 
-        modelAndView.addObject("dimensionList", dimensionList);
+        modelAndView.addObject("summaryModel", summaryList);
 
         return modelAndView;
-
-
     }
 
     // 결과 출력 (지금 미사용중)
