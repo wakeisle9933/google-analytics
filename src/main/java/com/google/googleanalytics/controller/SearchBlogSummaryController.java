@@ -21,14 +21,20 @@ public class SearchBlogSummaryController {
     @Autowired
     SearchBlogSummaryService searchBlogSummaryService;
 
+    // 조회수 순 조회
     @GetMapping("searchBlogSummaryBasePageViews")
     public ModelAndView SearchBlogSummary() throws IOException {
         return searchBlogSummaryService.SearchBlogSummary();
     }
 
+    // 수익 순 조회
     @GetMapping("searchBlogSummaryBaseRevenue")
     public ModelAndView SearchBlogSummaryBaseRevenue() throws IOException {
         return searchBlogSummaryService.SearchBlogSummaryBaseRevenue();
     }
+
+    // 신규 글 조회
+
+    // 카테고리 별 조회
 
 }
