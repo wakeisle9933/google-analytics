@@ -39,4 +39,6 @@ public class SearchBlogSummaryController {
 
     // 블로그 내부 검색 리스트 조회
 
+    // 조회 후 특정 키워드만 분리하여 수익 계산
+
 }

@@ -3,6 +3,7 @@ package com.google.googleanalytics.service;
 import com.google.api.services.analyticsreporting.v4.model.*;
 import com.google.googleanalytics.controller.AnalyticsConnectionController;
 import com.google.googleanalytics.domain.SearchBlogSummaryModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +17,10 @@ import java.util.List;
 
 @Service
 public class SearchBlogSummaryService {
+
+    @Autowired
+    SearchConditionService searchConditionService;
+
 
     public ModelAndView SearchBlogSummary() throws IOException {
         // 날짜 범위 설정
@@ -54,7 +59,7 @@ public class SearchBlogSummaryService {
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
                                                    .setDateRanges(Arrays.asList(dateRange))
-                                                   .setMetrics(findMetrics)
+                                                   .setMetrics(searchConditionService.SummarySearchMetricsList())
                                                    .setDimensions(findDimension)
                                                    .setPageSize(100000)
                                                    .setOrderBys(orderBys);
