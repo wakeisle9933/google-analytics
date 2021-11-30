@@ -28,28 +28,6 @@ public class SearchBlogSummaryService {
         dateRange.setStartDate("7DaysAgo");
         dateRange.setEndDate("today");
 
-        // Metrics(조회할 컬럼) 객체 생성
-        List<Metric> findMetrics = new ArrayList<>();
-        Metric pageviews = new Metric().setExpression("ga:pageviews")
-                                       .setAlias("pageviews");
-
-        Metric adsenseRevenue = new Metric().setExpression("ga:adsenseRevenue")
-                                            .setAlias("adsenseRevenue");
-
-        Metric adsenseAdsClicks = new Metric().setExpression("ga:adsenseAdsClicks")
-                                              .setAlias("adsenseAdsClicks");
-
-        findMetrics.add(pageviews);
-        findMetrics.add(adsenseRevenue);
-        findMetrics.add(adsenseAdsClicks);
-
-        List<Dimension> findDimension = new ArrayList<>();
-        Dimension pagePath = new Dimension().setName("ga:pagePath");
-        Dimension pageTitle = new Dimension().setName("ga:pageTitle");
-
-        findDimension.add(pagePath);
-        findDimension.add(pageTitle);
-
         // 정렬기준 설정
         List<OrderBy> orderBys = new ArrayList<>();
         OrderBy orderBy = new OrderBy().setFieldName("pageviews")
@@ -60,7 +38,7 @@ public class SearchBlogSummaryService {
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
                                                    .setDateRanges(Arrays.asList(dateRange))
                                                    .setMetrics(searchConditionService.SummarySearchMetricsList())
-                                                   .setDimensions(findDimension)
+                                                   .setDimensions(searchConditionService.SummarySearchDimensionsList())
                                                    .setPageSize(100000)
                                                    .setOrderBys(orderBys);
 

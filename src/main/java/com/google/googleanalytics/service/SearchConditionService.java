@@ -1,5 +1,6 @@
 package com.google.googleanalytics.service;
 
+import com.google.api.services.analyticsreporting.v4.model.Dimension;
 import com.google.api.services.analyticsreporting.v4.model.Metric;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +31,16 @@ public class SearchConditionService {
     }
 
     // 요약 조회용 Dimensions List 반환
-    public List<Metric> SummarySearchDimensionsList() {
+    public List<Dimension> SummarySearchDimensionsList() {
 
-        return null;
+        List<Dimension> dimensionsList = new ArrayList<>();
+        Dimension pagePath = new Dimension().setName("ga:pagePath");
+        Dimension pageTitle = new Dimension().setName("ga:pageTitle");
+
+        dimensionsList.add(pagePath);
+        dimensionsList.add(pageTitle);
+
+        return dimensionsList;
     }
 
 
