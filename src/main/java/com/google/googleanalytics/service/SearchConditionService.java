@@ -1,5 +1,6 @@
 package com.google.googleanalytics.service;
 
+import com.google.api.services.analyticsreporting.v4.model.DateRange;
 import com.google.api.services.analyticsreporting.v4.model.Dimension;
 import com.google.api.services.analyticsreporting.v4.model.Metric;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,15 @@ import java.util.List;
 
 @Service
 public class SearchConditionService {
+
+    // 날짜 범위 설정
+    public DateRange SummaryDateRange() {
+        DateRange dateRange = new DateRange();
+        dateRange.setStartDate("7DaysAgo");
+        dateRange.setEndDate("today");
+
+        return dateRange;
+    }
 
     // 요약 조회용 Metrics List 반환
     public List<Metric> SummarySearchMetricsList() {

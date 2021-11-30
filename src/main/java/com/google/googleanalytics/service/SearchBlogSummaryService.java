@@ -23,11 +23,6 @@ public class SearchBlogSummaryService {
 
 
     public ModelAndView SearchBlogSummary() throws IOException {
-        // 날짜 범위 설정
-        DateRange dateRange = new DateRange();
-        dateRange.setStartDate("7DaysAgo");
-        dateRange.setEndDate("today");
-
         // 정렬기준 설정
         List<OrderBy> orderBys = new ArrayList<>();
         OrderBy orderBy = new OrderBy().setFieldName("pageviews")
@@ -36,7 +31,7 @@ public class SearchBlogSummaryService {
 
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
-                                                   .setDateRanges(Arrays.asList(dateRange))
+                                                   .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange()))
                                                    .setMetrics(searchConditionService.SummarySearchMetricsList())
                                                    .setDimensions(searchConditionService.SummarySearchDimensionsList())
                                                    .setPageSize(100000)
