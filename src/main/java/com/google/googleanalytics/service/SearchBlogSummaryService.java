@@ -21,7 +21,6 @@ public class SearchBlogSummaryService {
     @Autowired
     SearchConditionService searchConditionService;
 
-
     public ModelAndView SearchBlogSummary() throws IOException {
         // 정렬기준 설정
         List<OrderBy> orderBys = new ArrayList<>();

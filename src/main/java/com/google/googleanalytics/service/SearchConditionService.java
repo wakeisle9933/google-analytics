@@ -14,8 +14,13 @@ public class SearchConditionService {
     // 날짜 범위 설정
     public DateRange SummaryDateRange() {
         DateRange dateRange = new DateRange();
+        dateRange.setStartDate("2021-11-29");
+        dateRange.setEndDate("2021-11-30");
+
+        /*
         dateRange.setStartDate("7DaysAgo");
         dateRange.setEndDate("today");
+        */
 
         return dateRange;
     }
