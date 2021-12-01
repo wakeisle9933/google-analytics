@@ -10,10 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SearchBlogSummaryService {
@@ -228,9 +225,17 @@ public class SearchBlogSummaryService {
             }
         }
 
+        HashMap<String, HashSet<String>> map = new HashMap<>();
+
         for(SearchBlogSummaryModel model : summaryList) {
             if(model.getPagePath().contains("?category=")) { // 카테고리가 들어있을 경우
-                System.out.println("CHK!!! : " + model.getPagePath());
+                String categoryValue = model.getPagePath();
+                String[] paramFinder = categoryValue.split("");
+                int paramIndex = Arrays.asList(paramFinder).indexOf("=") + 1;
+
+                System.out.println("인덱스 위치 : " + paramIndex + " CHK!!! : " + model.getPagePath() + " " +  categoryValue.substring(paramIndex));
+
+                // map.put(model.getPagePath().substring(paramIndex, 10), 1);
 
                 // CHK!!! : /12?category=728465
                 // CHK!!! : /m/529?category=748186
