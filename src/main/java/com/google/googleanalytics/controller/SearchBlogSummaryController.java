@@ -36,6 +36,10 @@ public class SearchBlogSummaryController {
     // 신규 글 조회
 
     // 카테고리 별 조회
+    @GetMapping("searchBlogSummaryCategory")
+    public ModelAndView SearchBlogSummaryCategory() throws IOException {
+        return searchBlogSummaryService.SearchBlogSummaryCategory();
+    }
 
     // 블로그 내부 검색 리스트 조회
 

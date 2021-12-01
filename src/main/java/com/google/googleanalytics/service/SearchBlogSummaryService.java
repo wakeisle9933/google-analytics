@@ -174,6 +174,78 @@ public class SearchBlogSummaryService {
         return modelAndView;
     }
 
+    // 카테고리별 조회수 / 수익 구하기
+    public ModelAndView SearchBlogSummaryCategory() throws IOException {
+        // ReportRequest 객체 생성.
+        ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
+                                                    .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange()))
+                                                    .setMetrics(searchConditionService.SummarySearchMetricsList())
+                                                    .setDimensions(searchConditionService.SummaryCategorySearchDimensionsList())
+                                                    .setPageSize(100000);
+
+        ArrayList<ReportRequest> requests = new ArrayList<>();
+        requests.add(request);
+
+        // GetReportsRequest 객체 생성
+        GetReportsRequest getReport = new GetReportsRequest().setReportRequests(requests);
+
+        // batchGet 메소드 생성해서 response 받아오기
+        GetReportsResponse response = AnalyticsConnectionController.service.reports().batchGet(getReport).execute();
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("CategorySummaryResult");
+        modelAndView.addObject("response", response.getReports());
+
+        // 반환용 List
+        LinkedList<SearchBlogSummaryModel> summaryList = new LinkedList<>();
+
+        for(Report report: response.getReports()) {
+
+            ColumnHeader header = report.getColumnHeader();
+            List<String> dimensionHeaders = header.getDimensions();
+            List<MetricHeaderEntry> metricHeaders = header.getMetricHeader().getMetricHeaderEntries();
+            List<ReportRow> rows = report.getData().getRows();
+            int count = 1;
+
+            for(ReportRow row: rows) {
+                List<String> dimensions = row.getDimensions();
+                List<DateRangeValues> metrics = row.getMetrics();
+                SearchBlogSummaryModel model = new SearchBlogSummaryModel();
+                model.setPostNumber(count); // postNumber
+                count++;
+
+                for (int i = 0; i < dimensionHeaders.size() && i < dimensions.size(); i++) {
+                    model.setPagePath(dimensions.get(0)); // pagePath
+                }
+
+                for (int j = 0; j < metrics.size(); j++) {
+                    DateRangeValues values = metrics.get(j);
+                    model.setPageViews(values.getValues().get(0)); // pageViews
+                    model.setAdsenseRevenue(BigDecimal.valueOf(Double.parseDouble(values.getValues().get(1))).toString()); // adsenseRevenue
+                    model.setAdsenseAdsClicks(values.getValues().get(2)); // adsenseAdsClicks
+                }
+                summaryList.add(model);
+            }
+        }
+
+        for(SearchBlogSummaryModel model : summaryList) {
+            if(model.getPagePath().contains("?category=")) { // 카테고리가 들어있을 경우
+                System.out.println("CHK!!! : " + model.getPagePath());
+
+                // CHK!!! : /12?category=728465
+                // CHK!!! : /m/529?category=748186
+            } else {
+                // nothing
+            }
+        }
+
+        modelAndView.addObject("summaryModel", summaryList);
+
+        return modelAndView;
+    }
+
+
+
 
 
     // 결과 출력 (지금 미사용중)

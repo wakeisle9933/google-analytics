@@ -14,13 +14,13 @@ public class SearchConditionService {
     // 날짜 범위 설정
     public DateRange SummaryDateRange() {
         DateRange dateRange = new DateRange();
+        /*
         dateRange.setStartDate("2021-11-29");
         dateRange.setEndDate("2021-11-30");
+*/
 
-        /*
         dateRange.setStartDate("7DaysAgo");
         dateRange.setEndDate("today");
-        */
 
         return dateRange;
     }
@@ -47,7 +47,6 @@ public class SearchConditionService {
 
     // 요약 조회용 Dimensions List 반환
     public List<Dimension> SummarySearchDimensionsList() {
-
         List<Dimension> dimensionsList = new ArrayList<>();
         Dimension pagePath = new Dimension().setName("ga:pagePath");
         Dimension pageTitle = new Dimension().setName("ga:pageTitle");
@@ -58,9 +57,13 @@ public class SearchConditionService {
         return dimensionsList;
     }
 
+    // 카테고리별 조회용 Dimensions List 반환
+    public List<Dimension> SummaryCategorySearchDimensionsList() {
+        List<Dimension> dimensionsList = new ArrayList<>();
+        Dimension pagePath = new Dimension().setName("ga:pagePath");
+        dimensionsList.add(pagePath);
 
-
-
-
+        return dimensionsList;
+    }
 
 }

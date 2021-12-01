@@ -17,5 +17,9 @@ public class SearchBlogSummaryModel {
     String pageViews;
     String adsenseRevenue;
     String adsenseAdsClicks;
+    String pagePathLevel1;
+    String pagePathLevel2;
+    String pagePathLevel3;
+    String pagePathLevel4;
 
 }
