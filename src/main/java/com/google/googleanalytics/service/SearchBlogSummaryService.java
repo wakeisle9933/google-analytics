@@ -226,14 +226,27 @@ public class SearchBlogSummaryService {
         }
 
         HashMap<String, HashSet<String>> map = new HashMap<>();
+        LinkedHashSet<String> categorySet = new LinkedHashSet<>();
 
         for(SearchBlogSummaryModel model : summaryList) {
             if(model.getPagePath().contains("?category=")) { // 카테고리가 들어있을 경우
                 String categoryValue = model.getPagePath();
                 String[] paramFinder = categoryValue.split("");
                 int paramIndex = Arrays.asList(paramFinder).indexOf("=") + 1;
+                int paramQuestionIndex = Arrays.asList(paramFinder).indexOf("?");
+                HashSet<String> set = new HashSet<>();
 
                 System.out.println("인덱스 위치 : " + paramIndex + " CHK!!! : " + model.getPagePath() + " " +  categoryValue.substring(paramIndex));
+                categorySet.add(categoryValue.substring(paramIndex));
+
+                if(categoryValue.substring(0,2).equals("/m")) { // 모바일일 경우
+                    System.out.println("Mobile : " + categoryValue.substring(3, paramQuestionIndex));
+                    set.add(categoryValue.substring(3, paramQuestionIndex));
+                } else { // 그 외의 경우
+                    System.out.println("PC : " + categoryValue.substring(1, paramQuestionIndex));
+                    set.add(categoryValue.substring(1, paramQuestionIndex));
+                }
+                map.put(categoryValue.substring(paramIndex), set);
 
                 // map.put(model.getPagePath().substring(paramIndex, 10), 1);
 
@@ -243,6 +256,9 @@ public class SearchBlogSummaryService {
                 // nothing
             }
         }
+        System.out.println("categorySet : " + categorySet);
+
+        System.out.println(" MAP : " + map);
 
         modelAndView.addObject("summaryModel", summaryList);
 
