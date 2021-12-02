@@ -27,10 +27,10 @@ public class AnalyticsConnectionController {
     public static String VIEW_ID = "";
     public static AnalyticsReporting service;
 
-    // Google Analytics API VIEW_ID 설정 및 연동처리
-    @GetMapping("baseCall")
+    // DB에 등록된 회원정보 조회
+    @GetMapping("searchExistViewId")
     @ResponseBody
-    public String baseCall() {
+    public String searchExistViewId() {
 
 
 
