@@ -9,11 +9,17 @@
          contentType: "application/json",
          dataType: "json",
          success : function (data, status) {
-            alert(data + " : !!!");
-            alert(status);
+            var items = '';
+            $.each(data, function (i, item) {
+                var rows = "<tr>"
+                + "<td>" + item.viewId + "</td>"
+                + "<td>" + item.remark + "</td>"
+                + "</tr>";
+                $('#existViewId').append(rows);
+            });
          },
          error : function (status) {
-            alert("error!");
+            alert(status + "error!");
          }
      });
   }
@@ -43,20 +49,14 @@
 
 </head>
 <body onload="init();">
-    <table>
+    <table id="existViewId">
         <thead>
         <tr>
-            <th>순번</th>
             <th>VIEW ID</th>
             <th>비고</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>test1</td>
-            <td>test2</td>
-            <td>test3</td>
-        </tr>
         </tbody>
     </table>
 </body>

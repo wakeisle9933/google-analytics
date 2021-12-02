@@ -10,7 +10,9 @@ import com.google.api.services.analyticsreporting.v4.AnalyticsReportingScopes;
 import com.google.googleanalytics.domain.ConnectionModel;
 import com.google.googleanalytics.domain.ExistViewIdEntity;
 import com.google.googleanalytics.repository.ExistViewIdRepository;
+import com.google.googleanalytics.service.AnalyticsConnectionService;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,16 +33,15 @@ public class AnalyticsConnectionController {
     public static final String KEY_FILE_LOCATION = "C:\\workspace\\analytics-web\\src\\main\\resources\\userdata\\analytics.json";
     public static String VIEW_ID = "";
     public static AnalyticsReporting service;
-    public ExistViewIdRepository existViewIdRepository;
+
+    @Autowired
+    public AnalyticsConnectionService analyticsConnectionService;
 
     // DB에 등록된 회원정보 조회
     @GetMapping("searchExistViewId")
     @ResponseBody
-    public String searchExistViewId() {
-
-        // System.out.println("!!!!! : " + existViewIdRepository.existsById("201175845"));
-
-        return "1111";
+    public List<ExistViewIdEntity> searchExistViewId() {
+        return analyticsConnectionService.searchExistViewId();
     }
 
     // Google Analytics API VIEW_ID 설정 및 연동처리
