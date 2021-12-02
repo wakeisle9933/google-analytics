@@ -9,13 +9,11 @@ import com.google.api.services.analyticsreporting.v4.AnalyticsReporting;
 import com.google.api.services.analyticsreporting.v4.AnalyticsReportingScopes;
 import com.google.googleanalytics.domain.ConnectionModel;
 import com.google.googleanalytics.domain.ExistViewIdEntity;
-import com.google.googleanalytics.repository.ExistViewIdRepository;
 import com.google.googleanalytics.service.AnalyticsConnectionService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.FileInputStream;
 import java.io.IOException;

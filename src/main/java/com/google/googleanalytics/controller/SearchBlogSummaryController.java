@@ -33,7 +33,7 @@ public class SearchBlogSummaryController {
         return searchBlogSummaryService.SearchBlogSummaryBaseRevenue();
     }
 
-    // 신규 글 조회
+    // 신규 글 순으로 조회
 
     // 카테고리 별 조회
     @GetMapping("searchBlogSummaryCategory")
