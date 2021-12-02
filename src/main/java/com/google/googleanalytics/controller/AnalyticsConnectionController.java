@@ -28,6 +28,17 @@ public class AnalyticsConnectionController {
     public static AnalyticsReporting service;
 
     // Google Analytics API VIEW_ID 설정 및 연동처리
+    @GetMapping("baseCall")
+    @ResponseBody
+    public String baseCall() {
+
+
+
+
+        return "1111";
+    }
+
+    // Google Analytics API VIEW_ID 설정 및 연동처리
     @PostMapping("connect")
     public String analyticsConnectPost(ConnectionModel form) {
         try {

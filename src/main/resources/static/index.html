@@ -1,5 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script language="javascript">
+  function init() {
+     $.ajax({
+         type : "GET",
+         url : "http://localhost:8080/baseCall",
+         contentType: "application/json",
+         dataType: "json",
+         success : function (data, status) {
+            alert(data + " : !!!");
+            alert(status);
+         },
+         error : function (status) {
+            alert("error!");
+         }
+     });
+  }
+</script>
 <style>
     table {
         border: 1px solid #444444;
@@ -21,28 +39,25 @@
                 <button type="submit">연결</button>
             </div>
         </form><br>
-
-        <table>
-            <thead>
-            <tr>
-                <th>순번</th>
-                <th>VIEW ID</th>
-                <th>비고</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>test1</td>
-                <td>test2</td>
-                <td>test3</td>
-            </tr>
-            </tbody>
-        </table>
-
     </div>
 
 </head>
-<body>
-
+<body onload="init();">
+    <table>
+        <thead>
+        <tr>
+            <th>순번</th>
+            <th>VIEW ID</th>
+            <th>비고</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>test1</td>
+            <td>test2</td>
+            <td>test3</td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

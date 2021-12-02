@@ -246,6 +246,7 @@ public class SearchBlogSummaryService {
                     System.out.println("PC : " + categoryValue.substring(1, paramQuestionIndex));
                     set.add(categoryValue.substring(1, paramQuestionIndex));
                 }
+
                 map.put(categoryValue.substring(paramIndex), set);
 
                 // map.put(model.getPagePath().substring(paramIndex, 10), 1);
@@ -256,9 +257,9 @@ public class SearchBlogSummaryService {
                 // nothing
             }
         }
-        System.out.println("categorySet : " + categorySet);
 
-        System.out.println(" MAP : " + map);
+        System.out.println("categorySet : " + categorySet);
+        System.out.println(" MAP : " + map); // map에
 
         modelAndView.addObject("summaryModel", summaryList);
 
