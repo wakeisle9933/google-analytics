@@ -20,7 +20,6 @@
         <thead>
             <tr>
                 <th>순번</th>
-                <th>페이지 링크</th>
                 <th>제목</th>
                 <th>페이지뷰</th>
                 <th>광고 수입</th>
@@ -30,7 +29,6 @@
         <tbody>
             <tr th:each="summary : ${summaryModel}">
                 <td th:text="${summary.postNumber}" style="text-align: center;"></td>
-                <td th:text="${summary.pagePath}"></td>
                 <td th:text="${summary.postName}"></td>
                 <td th:text="${summary.pageViews}"></td>
                 <td th:text="${summary.adsenseRevenue}"></td>

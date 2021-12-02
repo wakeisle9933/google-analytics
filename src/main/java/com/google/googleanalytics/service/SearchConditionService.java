@@ -48,10 +48,7 @@ public class SearchConditionService {
     // 요약 조회용 Dimensions List 반환
     public List<Dimension> SummarySearchDimensionsList() {
         List<Dimension> dimensionsList = new ArrayList<>();
-        Dimension pagePath = new Dimension().setName("ga:pagePath");
         Dimension pageTitle = new Dimension().setName("ga:pageTitle");
-
-        dimensionsList.add(pagePath);
         dimensionsList.add(pageTitle);
 
         return dimensionsList;

@@ -65,8 +65,7 @@ public class SearchBlogSummaryService {
                 count++;
 
                 for (int i = 0; i < dimensionHeaders.size() && i < dimensions.size(); i++) {
-                    model.setPagePath(dimensions.get(0)); // pagePath
-                    model.setPostName(dimensions.get(1)); // postName
+                    model.setPostName(dimensions.get(0)); // postName
                 }
 
                 for (int j = 0; j < metrics.size(); j++) {
