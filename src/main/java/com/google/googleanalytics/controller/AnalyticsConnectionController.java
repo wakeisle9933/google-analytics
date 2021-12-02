@@ -35,7 +35,7 @@ public class AnalyticsConnectionController {
     @Autowired
     public AnalyticsConnectionService analyticsConnectionService;
 
-    // DB에 등록된 회원정보 조회
+    // DB에 등록된 VIEW_ID 정보 조회
     @GetMapping("searchExistViewId")
     @ResponseBody
     public List<ExistViewIdEntity> searchExistViewId() {
