@@ -19,19 +19,13 @@ public class SearchBlogSummaryService {
     SearchConditionService searchConditionService;
 
     public ModelAndView SearchBlogSummary() throws IOException {
-        // 정렬기준 설정
-        List<OrderBy> orderBys = new ArrayList<>();
-        OrderBy orderBy = new OrderBy().setFieldName("pageviews")
-                .setSortOrder("descending");
-        orderBys.add(orderBy);
-
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
                                                    .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange()))
                                                    .setMetrics(searchConditionService.SummarySearchMetricsList())
                                                    .setDimensions(searchConditionService.SummarySearchDimensionsList())
                                                    .setPageSize(100000)
-                                                   .setOrderBys(orderBys);
+                                                   .setOrderBys(searchConditionService.SummaryOrderList());
 
         ArrayList<ReportRequest> requests = new ArrayList<>();
         requests.add(request);

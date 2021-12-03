@@ -3,6 +3,7 @@ package com.google.googleanalytics.service;
 import com.google.api.services.analyticsreporting.v4.model.DateRange;
 import com.google.api.services.analyticsreporting.v4.model.Dimension;
 import com.google.api.services.analyticsreporting.v4.model.Metric;
+import com.google.api.services.analyticsreporting.v4.model.OrderBy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +24,16 @@ public class SearchConditionService {
         dateRange.setEndDate("today");
 
         return dateRange;
+    }
+
+    // 정렬 조건 반환
+    public List<OrderBy> SummaryOrderList() {
+        List<OrderBy> orderBys = new ArrayList<>();
+        OrderBy orderBy = new OrderBy().setFieldName("pageviews")
+                .setSortOrder("descending");
+        orderBys.add(orderBy);
+
+        return orderBys;
     }
 
     // 요약 조회용 Metrics List 반환
