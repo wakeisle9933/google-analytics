@@ -37,21 +37,15 @@ public class SearchConditionService {
     }
 
     // 요약 조회용 Metrics List 반환
-    public List<Metric> SummarySearchMetricsList() {
+    public List<Metric> SummarySearchMetricsList(String[] metricsArray) {
         // Metrics(조회할 컬럼) 객체 생성
         List<Metric> metricsList = new ArrayList<>();
-        Metric pageviews = new Metric().setExpression("ga:pageviews")
-                .setAlias("pageviews");
 
-        Metric adsenseRevenue = new Metric().setExpression("ga:adsenseRevenue")
-                .setAlias("adsenseRevenue");
-
-        Metric adsenseAdsClicks = new Metric().setExpression("ga:adsenseAdsClicks")
-                .setAlias("adsenseAdsClicks");
-
-        metricsList.add(pageviews);
-        metricsList.add(adsenseRevenue);
-        metricsList.add(adsenseAdsClicks);
+        for(String s : metricsArray) {
+            Metric metric = new Metric().setExpression("ga:" + s)
+                                        .setAlias(s);
+            metricsList.add(metric);
+        }
 
         return metricsList;
     }

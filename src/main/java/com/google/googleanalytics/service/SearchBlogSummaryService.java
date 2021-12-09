@@ -19,10 +19,13 @@ public class SearchBlogSummaryService {
     SearchConditionService searchConditionService;
 
     public ModelAndView SearchBlogSummary() throws IOException {
+
+        String[] metricsArray = {"pageviews", "adsenseRevenue", "adsenseAdsClicks"};
+
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
                                                    .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange()))
-                                                   .setMetrics(searchConditionService.SummarySearchMetricsList())
+                                                   .setMetrics(searchConditionService.SummarySearchMetricsList(metricsArray))
                                                    .setDimensions(searchConditionService.SummarySearchDimensionsList())
                                                    .setPageSize(100000)
                                                    .setOrderBys(searchConditionService.SummaryOrderList());
@@ -166,10 +169,13 @@ public class SearchBlogSummaryService {
 
     // 카테고리별 조회수 / 수익 구하기
     public ModelAndView SearchBlogSummaryCategory() throws IOException {
+
+        String[] metricsArray = {"pageviews", "adsenseRevenue", "adsenseAdsClicks"};
+
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
                                                     .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange()))
-                                                    .setMetrics(searchConditionService.SummarySearchMetricsList())
+                                                    .setMetrics(searchConditionService.SummarySearchMetricsList(metricsArray))
                                                     .setDimensions(searchConditionService.SummaryCategorySearchDimensionsList())
                                                     .setPageSize(100000);
 
