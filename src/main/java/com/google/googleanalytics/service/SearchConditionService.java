@@ -51,10 +51,13 @@ public class SearchConditionService {
     }
 
     // 요약 조회용 Dimensions List 반환
-    public List<Dimension> SummarySearchDimensionsList() {
+    public List<Dimension> SummarySearchDimensionsList(String[] dimensionsArray) {
         List<Dimension> dimensionsList = new ArrayList<>();
-        Dimension pageTitle = new Dimension().setName("ga:pageTitle");
-        dimensionsList.add(pageTitle);
+
+        for(String s : dimensionsArray) {
+            Dimension dimension = new Dimension().setName(s);
+            dimensionsList.add(dimension);
+        }
 
         return dimensionsList;
     }

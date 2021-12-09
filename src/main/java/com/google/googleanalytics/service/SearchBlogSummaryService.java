@@ -21,12 +21,13 @@ public class SearchBlogSummaryService {
     public ModelAndView SearchBlogSummary() throws IOException {
 
         String[] metricsArray = {"pageviews", "adsenseRevenue", "adsenseAdsClicks"};
+        String[] dimensionsArray = {"ga:pageTitle"};
 
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
                                                    .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange()))
                                                    .setMetrics(searchConditionService.SummarySearchMetricsList(metricsArray))
-                                                   .setDimensions(searchConditionService.SummarySearchDimensionsList())
+                                                   .setDimensions(searchConditionService.SummarySearchDimensionsList(dimensionsArray))
                                                    .setPageSize(100000)
                                                    .setOrderBys(searchConditionService.SummaryOrderList());
 
