@@ -22,6 +22,7 @@ public class SearchBlogSummaryService {
 
         String[] metricsArray = {"pageviews", "adsenseRevenue", "adsenseAdsClicks"};
         String[] dimensionsArray = {"ga:pageTitle"};
+        String[] orderByArray = {"pageviews"};
 
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
@@ -29,7 +30,7 @@ public class SearchBlogSummaryService {
                                                    .setMetrics(searchConditionService.SummarySearchMetricsList(metricsArray))
                                                    .setDimensions(searchConditionService.SummarySearchDimensionsList(dimensionsArray))
                                                    .setPageSize(100000)
-                                                   .setOrderBys(searchConditionService.SummaryOrderList());
+                                                   .setOrderBys(searchConditionService.SummaryOrderList(orderByArray));
 
         ArrayList<ReportRequest> requests = new ArrayList<>();
         requests.add(request);

@@ -27,11 +27,14 @@ public class SearchConditionService {
     }
 
     // 정렬 조건 반환
-    public List<OrderBy> SummaryOrderList() {
+    public List<OrderBy> SummaryOrderList(String[] ordersArray) {
         List<OrderBy> orderBys = new ArrayList<>();
-        OrderBy orderBy = new OrderBy().setFieldName("pageviews")
-                .setSortOrder("descending");
-        orderBys.add(orderBy);
+
+        for(String s : ordersArray) {
+            OrderBy orderBy = new OrderBy().setFieldName(s)
+                                           .setSortOrder("descending");
+            orderBys.add(orderBy);
+        }
 
         return orderBys;
     }
