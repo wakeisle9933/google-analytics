@@ -29,7 +29,7 @@ public class SearchBlogSummaryService {
                                                    .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange()))
                                                    .setMetrics(searchConditionService.SummarySearchMetricsList(metricsArray))
                                                    .setDimensions(searchConditionService.SummarySearchDimensionsList(dimensionsArray))
-                                                   .setPageSize(100000)
+                                                   .setPageSize(100000) // max size
                                                    .setOrderBys(searchConditionService.SummaryOrderList(orderByArray));
 
         ArrayList<ReportRequest> requests = new ArrayList<>();
@@ -136,7 +136,6 @@ public class SearchBlogSummaryService {
         LinkedList<SearchBlogSummaryModel> summaryList = new LinkedList<>();
 
         for(Report report: response.getReports()) {
-
             ColumnHeader header = report.getColumnHeader();
             List<String> dimensionHeaders = header.getDimensions();
             List<MetricHeaderEntry> metricHeaders = header.getMetricHeader().getMetricHeaderEntries();
