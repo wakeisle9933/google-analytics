@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SearchBlogSummaryService {
@@ -228,17 +229,22 @@ public class SearchBlogSummaryService {
         HashMap<String, HashSet<String>> map = new HashMap<>();
         LinkedHashSet<String> categorySet = new LinkedHashSet<>();
 
+        // API에서 호출한 데이터 가공(카테고리 꺼내오기)
         for(SearchBlogSummaryModel model : summaryList) {
             if(model.getPagePath().contains("?category=")) { // 카테고리가 들어있을 경우
                 String categoryValue = model.getPagePath();
                 String[] paramFinder = categoryValue.split("");
-                int paramIndex = Arrays.asList(paramFinder).indexOf("=") + 1;
+                int paramIndex = Arrays.asList(paramFinder).indexOf("=") + 1; // 인덱스 다음 글자부터 카테고리(총 6글자)
                 int paramQuestionIndex = Arrays.asList(paramFinder).indexOf("?");
-                HashSet<String> set = new HashSet<>();
 
                 System.out.println("인덱스 위치 : " + paramIndex + " CHK!!! : " + model.getPagePath() + " " +  categoryValue.substring(paramIndex));
-                categorySet.add(categoryValue.substring(paramIndex));
+                // 티스토리 내 카테고리는 모두 6글자임
+                if(categoryValue.substring(paramIndex).length() == 6) {
+                    categorySet.add(categoryValue.substring(paramIndex));
+                }
 
+                /*
+                // 뭐할라고?
                 if(categoryValue.substring(0,2).equals("/m")) { // 모바일일 경우
                     System.out.println("Mobile : " + categoryValue.substring(3, paramQuestionIndex));
                     set.add(categoryValue.substring(3, paramQuestionIndex));
@@ -246,11 +252,11 @@ public class SearchBlogSummaryService {
                     System.out.println("PC : " + categoryValue.substring(1, paramQuestionIndex));
                     set.add(categoryValue.substring(1, paramQuestionIndex));
                 }
+*/
 
-                map.put(categoryValue.substring(paramIndex), set);
+                // map.put(categoryValue.substring(paramIndex), set);
 
                 // map.put(model.getPagePath().substring(paramIndex, 10), 1);
-
                 // CHK!!! : /12?category=728465
                 // CHK!!! : /m/529?category=748186
             } else {
@@ -258,8 +264,32 @@ public class SearchBlogSummaryService {
             }
         }
 
+        // 카테고리에 해당하는 Page 주소 집어넣기
+        for(String set : categorySet) {
+            LinkedHashSet<String> pageSet = new LinkedHashSet<>();
+
+            for(SearchBlogSummaryModel model : summaryList) {
+                String[] paramFinder = model.getPagePath().split("");
+                String categoryValue = model.getPagePath();
+                int paramQuestionIndex = Arrays.asList(paramFinder).indexOf("?");
+
+                if(model.getPagePath().contains("?category=") && model.getPagePath().contains(set)) {
+                    if(categoryValue.substring(0,2).equals("/m")) { // 모바일일 경우
+                        pageSet.add(categoryValue.substring(3, paramQuestionIndex));
+                    } else { // 그 외의 경우
+                        pageSet.add(categoryValue.substring(1, paramQuestionIndex));
+                    }
+                }
+            }
+
+            System.out.println("category : " + set + " list : " +  pageSet);
+
+        }
+
+
         System.out.println("categorySet : " + categorySet);
-        System.out.println(" MAP : " + map); // map에
+        // System.out.println("set : " + set);
+        // System.out.println(" MAP : " + map); // map에
 
         modelAndView.addObject("summaryModel", summaryList);
 

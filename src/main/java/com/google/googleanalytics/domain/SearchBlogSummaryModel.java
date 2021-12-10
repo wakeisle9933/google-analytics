@@ -17,5 +17,8 @@ public class SearchBlogSummaryModel {
     String pageViews;
     String adsenseRevenue;
     String adsenseAdsClicks;
+    String totalPageViews;
+    String totalAdsenseRevenue;
+    String totalAdsenseAdsClicks;
 
 }
