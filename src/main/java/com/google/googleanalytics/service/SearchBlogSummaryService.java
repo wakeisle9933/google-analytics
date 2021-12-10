@@ -335,7 +335,9 @@ public class SearchBlogSummaryService {
 
             // category_name 가져오기
             List<CategoryEntity> categoryEntities = categoryEntityRepository.searchCategoryName(AnalyticsConnectionController.VIEW_ID, set);
-            tempModel.setCategoryName(categoryEntities.get(0).getMinor_category_name());
+            if(categoryEntities.size() > 0) {
+                tempModel.setCategoryName(categoryEntities.get(0).getMinor_category_name());
+            }
 
             tempModel.setTotalPageViews(String.valueOf(accumulatePageViews));
             tempModel.setTotalAdsenseRevenue(String.valueOf(accumulateAdsenseRevenue));
@@ -346,10 +348,11 @@ public class SearchBlogSummaryService {
         // pageview 기준 정렬처리
         Collections.sort(categorySummaryModel, (a, b) -> Integer.parseInt(b.getTotalPageViews()) - Integer.parseInt(a.getTotalPageViews()));
 
-        // 순번 설정
+        // 순번, 클릭 당 수익 세팅
         int number = 1;
         for(int i = 0; i<categorySummaryModel.size(); i++) {
             categorySummaryModel.get(i).setPostNumber(number);
+            categorySummaryModel.get(i).setClickPerRevenue(String.valueOf(Double.parseDouble(categorySummaryModel.get(i).getTotalAdsenseRevenue()) / Double.parseDouble(categorySummaryModel.get(i).getTotalAdsenseAdsClicks())));
             number++;
         }
 

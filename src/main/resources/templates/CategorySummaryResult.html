@@ -25,6 +25,7 @@
                 <th>누적 페이지뷰</th>
                 <th>누적 광고수입</th>
                 <th>누적 광고 클릭 횟수</th>
+                <th>클릭 당 수익</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,7 @@
                 <td th:text="${summary.totalPageViews}"></td>
                 <td th:text="${summary.totalAdsenseRevenue}"></td>
                 <td th:text="${summary.totalAdsenseAdsClicks}"></td>
+                <td th:text="${summary.clickPerRevenue}"></td>
             </tr>
         </tbody>
     </table>
