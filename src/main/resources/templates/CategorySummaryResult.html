@@ -20,19 +20,21 @@
         <thead>
             <tr>
                 <th>순번</th>
-                <th>페이지 링크</th>
-                <th>페이지뷰</th>
-                <th>광고 수입</th>
-                <th>광고 클릭 수</th>
+                <th>카테고리</th>
+                <th>카테고리명</th>
+                <th>누적 페이지뷰</th>
+                <th>누적 광고수입</th>
+                <th>누적 광고 클릭 횟수</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="summary : ${summaryModel}">
                 <td th:text="${summary.postNumber}" style="text-align: center;"></td>
-                <td th:text="${summary.pagePath}"></td>
-                <td th:text="${summary.pageViews}"></td>
-                <td th:text="${summary.adsenseRevenue}"></td>
-                <td th:text="${summary.adsenseAdsClicks}"></td>
+                <td th:text="${summary.category}"></td>
+                <td th:text="${summary.categoryName}"></td>
+                <td th:text="${summary.totalPageViews}"></td>
+                <td th:text="${summary.totalAdsenseRevenue}"></td>
+                <td th:text="${summary.totalAdsenseAdsClicks}"></td>
             </tr>
         </tbody>
     </table>

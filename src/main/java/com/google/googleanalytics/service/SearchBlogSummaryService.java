@@ -2,12 +2,17 @@ package com.google.googleanalytics.service;
 
 import com.google.api.services.analyticsreporting.v4.model.*;
 import com.google.googleanalytics.controller.AnalyticsConnectionController;
+import com.google.googleanalytics.domain.CategoryEntity;
+import com.google.googleanalytics.domain.SearchBlogCategorySummaryModel;
 import com.google.googleanalytics.domain.SearchBlogSummaryModel;
+import com.google.googleanalytics.repository.CategoryEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
@@ -18,6 +23,12 @@ public class SearchBlogSummaryService {
 
     @Autowired
     SearchConditionService searchConditionService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Autowired
+    CategoryEntityRepository categoryEntityRepository;
 
     public ModelAndView SearchBlogSummary() throws IOException {
 
@@ -194,8 +205,10 @@ public class SearchBlogSummaryService {
         modelAndView.setViewName("CategorySummaryResult");
         modelAndView.addObject("response", response.getReports());
 
-        // 반환용 List
+        // Response 보관
         LinkedList<SearchBlogSummaryModel> summaryList = new LinkedList<>();
+        // 최종 반환용 List
+        LinkedList<SearchBlogCategorySummaryModel> categorySummaryModel = new LinkedList<>();
 
         for(Report report: response.getReports()) {
 
@@ -228,6 +241,7 @@ public class SearchBlogSummaryService {
 
         HashMap<String, HashSet<String>> map = new HashMap<>();
         LinkedHashSet<String> categorySet = new LinkedHashSet<>();
+        int number = 0;
 
         // API에서 호출한 데이터 가공(카테고리 꺼내오기)
         for(SearchBlogSummaryModel model : summaryList) {
@@ -237,28 +251,12 @@ public class SearchBlogSummaryService {
                 int paramIndex = Arrays.asList(paramFinder).indexOf("=") + 1; // 인덱스 다음 글자부터 카테고리(총 6글자)
                 int paramQuestionIndex = Arrays.asList(paramFinder).indexOf("?");
 
-                System.out.println("인덱스 위치 : " + paramIndex + " CHK!!! : " + model.getPagePath() + " " +  categoryValue.substring(paramIndex));
+                // System.out.println("인덱스 위치 : " + paramIndex + " CHK!!! : " + model.getPagePath() + " " +  categoryValue.substring(paramIndex));
                 // 티스토리 내 카테고리는 모두 6글자임
                 if(categoryValue.substring(paramIndex).length() == 6) {
                     categorySet.add(categoryValue.substring(paramIndex));
                 }
 
-                /*
-                // 뭐할라고?
-                if(categoryValue.substring(0,2).equals("/m")) { // 모바일일 경우
-                    System.out.println("Mobile : " + categoryValue.substring(3, paramQuestionIndex));
-                    set.add(categoryValue.substring(3, paramQuestionIndex));
-                } else { // 그 외의 경우
-                    System.out.println("PC : " + categoryValue.substring(1, paramQuestionIndex));
-                    set.add(categoryValue.substring(1, paramQuestionIndex));
-                }
-*/
-
-                // map.put(categoryValue.substring(paramIndex), set);
-
-                // map.put(model.getPagePath().substring(paramIndex, 10), 1);
-                // CHK!!! : /12?category=728465
-                // CHK!!! : /m/529?category=748186
             } else {
                 // nothing
             }
@@ -268,6 +266,7 @@ public class SearchBlogSummaryService {
         for(String set : categorySet) {
             LinkedHashSet<String> pageSet = new LinkedHashSet<>();
 
+            // 카테고리에 해당하는 Page 주소 집어넣기
             for(SearchBlogSummaryModel model : summaryList) {
                 String[] paramFinder = model.getPagePath().split("");
                 String categoryValue = model.getPagePath();
@@ -276,29 +275,57 @@ public class SearchBlogSummaryService {
                 if(model.getPagePath().contains("?category=") && model.getPagePath().contains(set)) {
                     if(categoryValue.substring(0,2).equals("/m")) { // 모바일일 경우
                         pageSet.add(categoryValue.substring(3, paramQuestionIndex));
-                    } else { // 그 외의 경우
+                    } else { // PC
                         pageSet.add(categoryValue.substring(1, paramQuestionIndex));
                     }
                 }
             }
 
-            System.out.println("category : " + set + " list : " +  pageSet);
+            int accumulatePageViews = 0;
+            Double accumulateAdsenseRevenue = 0D;
+            int accumulateAdsenseAdsClicks = 0;
 
+            // 카테고리별 누적 pageViews / adsenseRevenue / adsenseAdsClicks 계산
+            for(SearchBlogSummaryModel model : summaryList) {
+                String[] paramFinder = model.getPagePath().split("");
+                String categoryValue = model.getPagePath();
+                int paramQuestionIndex = Arrays.asList(paramFinder).indexOf("?");
+
+                for(String page : pageSet) {
+                    if(model.getPagePath().contains(page)) {
+                        accumulatePageViews = accumulatePageViews + Integer.parseInt(model.getPageViews());
+                        accumulateAdsenseRevenue = accumulateAdsenseRevenue + Double.parseDouble(model.getAdsenseRevenue());
+                        accumulateAdsenseAdsClicks = accumulateAdsenseAdsClicks + Integer.parseInt(model.getAdsenseAdsClicks());
+                    }
+                }
+            }
+
+            // System.out.println("category : " + set + " list : " +  pageSet);
+            System.out.println("ROW CHANGE");
+            System.out.println("category : " + set);
+            System.out.println("accumulatePageViews : " + accumulatePageViews);
+            System.out.println("accumulateAdsenseRevenue : " + accumulateAdsenseRevenue);
+            System.out.println("accumulateAdsenseAdsClicks : " + accumulateAdsenseAdsClicks);
+
+            SearchBlogCategorySummaryModel tempModel = new SearchBlogCategorySummaryModel();
+            number++;
+            tempModel.setPostNumber(number);
+            tempModel.setCategory(set);
+
+            // category_name 가져오기
+            List<CategoryEntity> categoryEntities = categoryEntityRepository.searchCategoryName(AnalyticsConnectionController.VIEW_ID, set);
+            tempModel.setCategoryName(categoryEntities.get(0).getMinor_category_name());
+
+            tempModel.setTotalPageViews(String.valueOf(accumulatePageViews));
+            tempModel.setTotalAdsenseRevenue(String.valueOf(accumulateAdsenseRevenue));
+            tempModel.setTotalAdsenseAdsClicks(String.valueOf(accumulateAdsenseAdsClicks));
+            categorySummaryModel.add(tempModel);
         }
-
-
-        System.out.println("categorySet : " + categorySet);
-        // System.out.println("set : " + set);
-        // System.out.println(" MAP : " + map); // map에
-
-        modelAndView.addObject("summaryModel", summaryList);
-
+        // pageview 기준 정렬처리
+        Collections.sort(categorySummaryModel, (a, b) -> Integer.parseInt(b.getTotalPageViews()) - Integer.parseInt(a.getTotalPageViews()));
+        modelAndView.addObject("summaryModel", categorySummaryModel);
         return modelAndView;
     }
-
-
-
-
 
     // 결과 출력 (지금 미사용중)
     public static void printResponse(GetReportsResponse response) {

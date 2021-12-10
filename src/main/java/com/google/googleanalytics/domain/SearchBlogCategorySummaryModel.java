@@ -9,13 +9,13 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class SearchBlogSummaryModel {
+public class SearchBlogCategorySummaryModel {
 
     int postNumber;
-    String pagePath;
-    String postName;
-    String pageViews;
-    String adsenseRevenue;
-    String adsenseAdsClicks;
+    String category;
+    String categoryName;
+    String totalPageViews;
+    String totalAdsenseRevenue;
+    String totalAdsenseAdsClicks;
 
 }
