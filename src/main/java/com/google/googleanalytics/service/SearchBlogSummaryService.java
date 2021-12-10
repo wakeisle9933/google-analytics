@@ -241,7 +241,6 @@ public class SearchBlogSummaryService {
 
         HashMap<String, HashSet<String>> map = new HashMap<>();
         LinkedHashSet<String> categorySet = new LinkedHashSet<>();
-        int number = 0;
 
         // API에서 호출한 데이터 가공(카테고리 꺼내오기)
         for(SearchBlogSummaryModel model : summaryList) {
@@ -251,9 +250,8 @@ public class SearchBlogSummaryService {
                 int paramIndex = Arrays.asList(paramFinder).indexOf("=") + 1; // 인덱스 다음 글자부터 카테고리(총 6글자)
                 int paramQuestionIndex = Arrays.asList(paramFinder).indexOf("?");
 
-                // System.out.println("인덱스 위치 : " + paramIndex + " CHK!!! : " + model.getPagePath() + " " +  categoryValue.substring(paramIndex));
-                // 티스토리 내 카테고리는 모두 6글자임
-                if(categoryValue.substring(paramIndex).length() == 6) {
+                // 티스토리 내 카테고리는 모두 6~7 글자임
+                if(categoryValue.substring(paramIndex).length() == 6 || categoryValue.substring(paramIndex).length() == 7) {
                     categorySet.add(categoryValue.substring(paramIndex));
                 }
 
@@ -286,30 +284,53 @@ public class SearchBlogSummaryService {
             int accumulateAdsenseAdsClicks = 0;
 
             // 카테고리별 누적 pageViews / adsenseRevenue / adsenseAdsClicks 계산
+            System.out.println("category : " + set + " pageSet Test : " + pageSet);
             for(SearchBlogSummaryModel model : summaryList) {
                 String[] paramFinder = model.getPagePath().split("");
                 String categoryValue = model.getPagePath();
+                int paramSlashIndex = Arrays.asList(paramFinder).indexOf("/");
                 int paramQuestionIndex = Arrays.asList(paramFinder).indexOf("?");
 
-                for(String page : pageSet) {
-                    if(model.getPagePath().contains(page)) {
-                        accumulatePageViews = accumulatePageViews + Integer.parseInt(model.getPageViews());
-                        accumulateAdsenseRevenue = accumulateAdsenseRevenue + Double.parseDouble(model.getAdsenseRevenue());
-                        accumulateAdsenseAdsClicks = accumulateAdsenseAdsClicks + Integer.parseInt(model.getAdsenseAdsClicks());
+                if(model.getPagePath().length() >= 3 && model.getPagePath().length() <= 6 && paramQuestionIndex == -1) {
+                    if(model.getPagePath().substring(0,3).equals("/m/")) {
+                        for(String s : pageSet) {
+                            if(model.getPagePath().substring(4).equals(s)) {
+                                accumulatePageViews = accumulatePageViews + Integer.parseInt(model.getPageViews());
+                                accumulateAdsenseRevenue = accumulateAdsenseRevenue + Double.parseDouble(model.getAdsenseRevenue());
+                                accumulateAdsenseAdsClicks = accumulateAdsenseAdsClicks + Integer.parseInt(model.getAdsenseAdsClicks());
+                            }
+                        }
+                    } else {
+                        for(String s : pageSet) {
+                            if(model.getPagePath().substring(1).equals(s)) {
+                                accumulatePageViews = accumulatePageViews + Integer.parseInt(model.getPageViews());
+                                accumulateAdsenseRevenue = accumulateAdsenseRevenue + Double.parseDouble(model.getAdsenseRevenue());
+                                accumulateAdsenseAdsClicks = accumulateAdsenseAdsClicks + Integer.parseInt(model.getAdsenseAdsClicks());
+                            }
+                        }
+                    }
+                } else if(model.getPagePath().contains("?category=")) {
+                    if(model.getPagePath().substring(0,3).equals("/m/")) {
+                        for(String s : pageSet) {
+                            if(model.getPagePath().substring(4, paramQuestionIndex).equals(s)) {
+                                accumulatePageViews = accumulatePageViews + Integer.parseInt(model.getPageViews());
+                                accumulateAdsenseRevenue = accumulateAdsenseRevenue + Double.parseDouble(model.getAdsenseRevenue());
+                                accumulateAdsenseAdsClicks = accumulateAdsenseAdsClicks + Integer.parseInt(model.getAdsenseAdsClicks());
+                            }
+                        }
+                    } else {
+                        for(String s : pageSet) {
+                            if(model.getPagePath().substring(1, paramQuestionIndex).equals(s)) {
+                                accumulatePageViews = accumulatePageViews + Integer.parseInt(model.getPageViews());
+                                accumulateAdsenseRevenue = accumulateAdsenseRevenue + Double.parseDouble(model.getAdsenseRevenue());
+                                accumulateAdsenseAdsClicks = accumulateAdsenseAdsClicks + Integer.parseInt(model.getAdsenseAdsClicks());
+                            }
+                        }
                     }
                 }
             }
 
-            // System.out.println("category : " + set + " list : " +  pageSet);
-            System.out.println("ROW CHANGE");
-            System.out.println("category : " + set);
-            System.out.println("accumulatePageViews : " + accumulatePageViews);
-            System.out.println("accumulateAdsenseRevenue : " + accumulateAdsenseRevenue);
-            System.out.println("accumulateAdsenseAdsClicks : " + accumulateAdsenseAdsClicks);
-
             SearchBlogCategorySummaryModel tempModel = new SearchBlogCategorySummaryModel();
-            number++;
-            tempModel.setPostNumber(number);
             tempModel.setCategory(set);
 
             // category_name 가져오기
@@ -321,8 +342,17 @@ public class SearchBlogSummaryService {
             tempModel.setTotalAdsenseAdsClicks(String.valueOf(accumulateAdsenseAdsClicks));
             categorySummaryModel.add(tempModel);
         }
+
         // pageview 기준 정렬처리
         Collections.sort(categorySummaryModel, (a, b) -> Integer.parseInt(b.getTotalPageViews()) - Integer.parseInt(a.getTotalPageViews()));
+
+        // 순번 설정
+        int number = 1;
+        for(int i = 0; i<categorySummaryModel.size(); i++) {
+            categorySummaryModel.get(i).setPostNumber(number);
+            number++;
+        }
+
         modelAndView.addObject("summaryModel", categorySummaryModel);
         return modelAndView;
     }
