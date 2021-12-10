@@ -356,6 +356,24 @@ public class SearchBlogSummaryService {
             number++;
         }
 
+        SearchBlogCategorySummaryModel lastModel = new SearchBlogCategorySummaryModel();
+        int sumPageViews = 0;
+        Double sumAdsenseRevenue = 0D;
+        int sumAdsenseAdsClicks = 0;
+
+        for(SearchBlogCategorySummaryModel model : categorySummaryModel) {
+            sumPageViews = sumPageViews + Integer.parseInt(model.getTotalPageViews());
+            sumAdsenseRevenue = sumAdsenseRevenue + Double.parseDouble(model.getTotalAdsenseRevenue());
+            sumAdsenseAdsClicks = sumAdsenseAdsClicks + Integer.parseInt(model.getTotalAdsenseAdsClicks());
+        }
+
+        lastModel.setCategoryName("총계");
+        lastModel.setTotalPageViews(String.valueOf(sumPageViews));
+        lastModel.setTotalAdsenseRevenue(String.valueOf(sumAdsenseRevenue));
+        lastModel.setTotalAdsenseAdsClicks(String.valueOf(sumAdsenseAdsClicks));
+        lastModel.setClickPerRevenue(String.valueOf(sumAdsenseRevenue / sumAdsenseAdsClicks));
+        categorySummaryModel.add(lastModel);
+
         modelAndView.addObject("summaryModel", categorySummaryModel);
         return modelAndView;
     }
