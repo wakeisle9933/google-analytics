@@ -20,16 +20,13 @@ public class SearchBlogSummaryController {
     // 조회수 순 조회
     @GetMapping("searchBlogSummaryBasePageViews")
     public ModelAndView SearchBlogSummary(String fromDate, String toDate) throws IOException {
-        System.out.println("fromDate : " + fromDate);
-        System.out.println("toDate : " + toDate);
-
-        return searchBlogSummaryService.SearchBlogSummary();
+        return searchBlogSummaryService.SearchBlogSummary(fromDate, toDate);
     }
 
     // 수익 순 조회
     @GetMapping("searchBlogSummaryBaseRevenue")
-    public ModelAndView SearchBlogSummaryBaseRevenue() throws IOException {
-        return searchBlogSummaryService.SearchBlogSummaryBaseRevenue();
+    public ModelAndView SearchBlogSummaryBaseRevenue(String fromDate, String toDate) throws IOException {
+        return searchBlogSummaryService.SearchBlogSummaryBaseRevenue(fromDate, toDate);
     }
 
     //
@@ -38,8 +35,8 @@ public class SearchBlogSummaryController {
 
     // 카테고리 별 조회
     @GetMapping("searchBlogSummaryCategory")
-    public ModelAndView SearchBlogSummaryCategory() throws IOException {
-        return searchBlogSummaryService.SearchBlogSummaryCategory();
+    public ModelAndView SearchBlogSummaryCategory(String fromDate, String toDate) throws IOException {
+        return searchBlogSummaryService.SearchBlogSummaryCategory(fromDate, toDate);
     }
 
     // 블로그 내부 검색 리스트 조회

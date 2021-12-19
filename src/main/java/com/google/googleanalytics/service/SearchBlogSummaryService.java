@@ -30,7 +30,7 @@ public class SearchBlogSummaryService {
     @Autowired
     CategoryEntityRepository categoryEntityRepository;
 
-    public ModelAndView SearchBlogSummary() throws IOException {
+    public ModelAndView SearchBlogSummary(String fromDate, String toDate) throws IOException {
 
         String[] metricsArray = {"pageviews", "adsenseRevenue", "adsenseAdsClicks"};
         String[] dimensionsArray = {"ga:pageTitle"};
@@ -38,7 +38,7 @@ public class SearchBlogSummaryService {
 
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
-                                                   .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange()))
+                                                   .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange(fromDate, toDate)))
                                                    .setMetrics(searchConditionService.SummarySearchMetricsList(metricsArray))
                                                    .setDimensions(searchConditionService.SummarySearchDimensionsList(dimensionsArray))
                                                    .setPageSize(100000) // max size
@@ -94,7 +94,7 @@ public class SearchBlogSummaryService {
         return modelAndView;
     }
 
-    public ModelAndView SearchBlogSummaryBaseRevenue() throws IOException {
+    public ModelAndView SearchBlogSummaryBaseRevenue(String fromDate, String toDate) throws IOException {
         // 날짜 범위 설정
         DateRange dateRange = new DateRange();
         dateRange.setStartDate("7DaysAgo");
@@ -181,13 +181,13 @@ public class SearchBlogSummaryService {
     }
 
     // 카테고리별 조회수 / 수익 구하기
-    public ModelAndView SearchBlogSummaryCategory() throws IOException {
+    public ModelAndView SearchBlogSummaryCategory(String fromDate, String toDate) throws IOException {
 
         String[] metricsArray = {"pageviews", "adsenseRevenue", "adsenseAdsClicks"};
 
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
-                                                    .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange()))
+                                                    .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange(fromDate, toDate)))
                                                     .setMetrics(searchConditionService.SummarySearchMetricsList(metricsArray))
                                                     .setDimensions(searchConditionService.SummaryCategorySearchDimensionsList())
                                                     .setPageSize(100000);
