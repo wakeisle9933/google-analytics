@@ -20,7 +20,7 @@ public class SearchConditionService {
         dateRange.setEndDate("2021-11-30");
         */
 
-        dateRange.setStartDate("7DaysAgo");
+        dateRange.setStartDate("1DaysAgo");
         dateRange.setEndDate("today");
 
         return dateRange;

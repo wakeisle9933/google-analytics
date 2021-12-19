@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
+<script type="text/javascript">
+    window.onload = function() {
+        var fromDate = new Date();
+        var toDate = new Date();
+
+        fromDate.setDate(fromDate.getDate()-8);
+        toDate.setDate(toDate.getDate()-1);
+
+        document.getElementById('fromDate').valueAsDate = fromDate;
+        document.getElementById('toDate').valueAsDate = toDate;
+    }
+
+    function summaryBasePageViews() {
+        var fromDate = document.getElementById("fromDate").value;
+        var toDate = document.getElementById("toDate").value;
+
+        location.href = "/search/searchBlogSummaryBasePageViews?" + "fromDate=" + fromDate + "&toDate=" + toDate;
+    }
+
+</script>
 <head>
     <meta charset="UTF-8">
     <title>Analytics Report</title>
@@ -10,7 +30,11 @@
         <button type="submit">VIEW ID 변경</button>
     </form><br>
 
-    <a href="/search/searchBlogSummaryBasePageViews">7일간 게시물별 Pageview 조회(조회수 기준)</a><br>
+    <span>조회용 날짜 설정</span><br>
+    <input type="date" id="fromDate"> ~
+    <input type="date" id="toDate"><br><br>
+
+    <a onclick="summaryBasePageViews()">7일간 게시물별 Pageview 조회(조회수 기준)</a><br>
     <a href="/search/searchBlogSummaryBaseRevenue">7일간 게시물별 Pageview 조회(수익 기준)</a><br>
     <a href="/search/searchBlogSummaryBaseRevenue">신규 게시물 순 조회 (게시물별 pageview 조회한 뒤에 합쳐서 만들어야 할듯..)</a><br>
     <a href="/search/searchBlogSummaryCategory">카테고리별 수익 조회</a><br>

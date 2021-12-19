@@ -19,7 +19,10 @@ public class SearchBlogSummaryController {
 
     // 조회수 순 조회
     @GetMapping("searchBlogSummaryBasePageViews")
-    public ModelAndView SearchBlogSummary() throws IOException {
+    public ModelAndView SearchBlogSummary(String fromDate, String toDate) throws IOException {
+        System.out.println("fromDate : " + fromDate);
+        System.out.println("toDate : " + toDate);
+
         return searchBlogSummaryService.SearchBlogSummary();
     }
 
