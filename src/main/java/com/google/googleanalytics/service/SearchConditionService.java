@@ -15,7 +15,6 @@ public class SearchConditionService {
     // 날짜 범위 설정
     public DateRange SummaryDateRange(String fromDate, String toDate) {
         DateRange dateRange = new DateRange();
-
         dateRange.setStartDate(fromDate);
         dateRange.setEndDate(toDate);
 

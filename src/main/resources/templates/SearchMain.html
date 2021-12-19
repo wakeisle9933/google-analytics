@@ -6,8 +6,8 @@
         var fromDate = new Date();
         var toDate = new Date();
 
-        fromDate.setDate(fromDate.getDate()-8);
-        toDate.setDate(toDate.getDate()-1);
+        fromDate.setDate(fromDate.getDate()-7);
+        toDate.setDate(toDate.getDate());
 
         document.getElementById('fromDate').valueAsDate = fromDate;
         document.getElementById('toDate').valueAsDate = toDate;
@@ -17,8 +17,8 @@
         var fromDate = new Date();
         var toDate = new Date();
 
-        fromDate.setDate(fromDate.getDate()-2);
-        toDate.setDate(toDate.getDate()-1);
+        fromDate.setDate(fromDate.getDate()-1);
+        toDate.setDate(toDate.getDate());
 
         document.getElementById('fromDate').valueAsDate = fromDate;
         document.getElementById('toDate').valueAsDate = toDate;
@@ -28,8 +28,8 @@
         var fromDate = new Date();
         var toDate = new Date();
 
-        fromDate.setDate(fromDate.getDate()-8);
-        toDate.setDate(toDate.getDate()-1);
+        fromDate.setDate(fromDate.getDate()-7);
+        toDate.setDate(toDate.getDate());
 
         document.getElementById('fromDate').valueAsDate = fromDate;
         document.getElementById('toDate').valueAsDate = toDate;
@@ -39,8 +39,8 @@
         var fromDate = new Date();
         var toDate = new Date();
 
-        fromDate.setDate(fromDate.getDate()-31);
-        toDate.setDate(toDate.getDate()-1);
+        fromDate.setDate(fromDate.getDate()-30);
+        toDate.setDate(toDate.getDate());
 
         document.getElementById('fromDate').valueAsDate = fromDate;
         document.getElementById('toDate').valueAsDate = toDate;
@@ -51,6 +51,13 @@
         var toDate = document.getElementById("toDate").value;
 
         location.href = "/search/searchBlogSummaryBasePageViews?" + "fromDate=" + fromDate + "&toDate=" + toDate;
+    }
+
+    function searchBlogSummaryCategory() {
+        var fromDate = document.getElementById("fromDate").value;
+        var toDate = document.getElementById("toDate").value;
+
+        location.href = "/search/searchBlogSummaryCategory?" + "fromDate=" + fromDate + "&toDate=" + toDate;
     }
 
 </script>
@@ -73,7 +80,7 @@
     <a onclick="summaryBasePageViews()">7일간 게시물별 Pageview 조회(조회수 기준)</a><br>
     <a href="/search/searchBlogSummaryBaseRevenue">7일간 게시물별 Pageview 조회(수익 기준)</a><br>
     <a href="/search/searchBlogSummaryBaseRevenue">신규 게시물 순 조회 (게시물별 pageview 조회한 뒤에 합쳐서 만들어야 할듯..)</a><br>
-    <a href="/search/searchBlogSummaryCategory">카테고리별 수익 조회</a><br>
+    <a onclick="searchBlogSummaryCategory()">카테고리별 수익 조회</a><br>
 
 </head>
 <body>
