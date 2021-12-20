@@ -13,12 +13,23 @@
         document.getElementById('toDate').valueAsDate = toDate;
     }
 
+    function dateTodaySetting() {
+        var fromDate = new Date();
+        var toDate = new Date();
+
+        fromDate.setDate(fromDate.getDate());
+        toDate.setDate(toDate.getDate());
+
+        document.getElementById('fromDate').valueAsDate = fromDate;
+        document.getElementById('toDate').valueAsDate = toDate;
+    }
+
     function date1daySetting() {
         var fromDate = new Date();
         var toDate = new Date();
 
         fromDate.setDate(fromDate.getDate()-1);
-        toDate.setDate(toDate.getDate());
+        toDate.setDate(toDate.getDate()-1);
 
         document.getElementById('fromDate').valueAsDate = fromDate;
         document.getElementById('toDate').valueAsDate = toDate;
@@ -53,6 +64,13 @@
         location.href = "/search/searchBlogSummaryBasePageViews?" + "fromDate=" + fromDate + "&toDate=" + toDate;
     }
 
+    function summaryBaseRevenue() {
+        var fromDate = document.getElementById("fromDate").value;
+        var toDate = document.getElementById("toDate").value;
+
+        location.href = "/search/searchBlogSummaryBasePageViews?" + "fromDate=" + fromDate + "&toDate=" + toDate;
+    }
+
     function searchBlogSummaryCategory() {
         var fromDate = document.getElementById("fromDate").value;
         var toDate = document.getElementById("toDate").value;
@@ -71,14 +89,15 @@
     </form><br>
 
     <span>조회용 날짜 설정</span><br>
-    <button onclick="date1daySetting()">조회간격 1일 세팅</button>
+    <button onclick="dateTodaySetting()">조회간격 당일 세팅</button>
+    <button onclick="date1daySetting()">조회간격 전일 세팅</button>
     <button onclick="date7daySetting()">조회간격 7일 세팅</button>
     <button onclick="date30daySetting()">조회간격 30일 세팅</button><br>
     <input type="date" id="fromDate"> ~
     <input type="date" id="toDate"><br><br>
 
-    <a onclick="summaryBasePageViews()">7일간 게시물별 Pageview 조회(조회수 기준)</a><br>
-    <a href="/search/searchBlogSummaryBaseRevenue">7일간 게시물별 Pageview 조회(수익 기준)</a><br>
+    <a onclick="summaryBasePageViews()">게시물별 Pageview 조회(조회수 기준)</a><br>
+    <a onclick="summaryBaseRevenue()">게시물별 Pageview 조회(수익 기준)</a><br>
     <a href="/search/searchBlogSummaryBaseRevenue">신규 게시물 순 조회 (게시물별 pageview 조회한 뒤에 합쳐서 만들어야 할듯..)</a><br>
     <a onclick="searchBlogSummaryCategory()">카테고리별 수익 조회</a><br>
 

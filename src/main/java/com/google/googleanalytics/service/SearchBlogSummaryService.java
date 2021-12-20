@@ -95,41 +95,17 @@ public class SearchBlogSummaryService {
     }
 
     public ModelAndView SearchBlogSummaryBaseRevenue(String fromDate, String toDate) throws IOException {
-        // 날짜 범위 설정
-        DateRange dateRange = new DateRange();
-        dateRange.setStartDate("7DaysAgo");
-        dateRange.setEndDate("today");
-
-        // Metrics(조회할 컬럼) 객체 생성
-        List<Metric> findMetrics = new ArrayList<>();
-        Metric pageviews = new Metric().setExpression("ga:pageviews")
-                                       .setAlias("pageviews");
-
-        Metric adsenseRevenue = new Metric().setExpression("ga:adsenseRevenue")
-                                            .setAlias("adsenseRevenue");
-
-        Metric adsenseAdsClicks = new Metric().setExpression("ga:adsenseAdsClicks")
-                                              .setAlias("adsenseAdsClicks");
-
-        findMetrics.add(pageviews);
-        findMetrics.add(adsenseRevenue);
-        findMetrics.add(adsenseAdsClicks);
-
-        Dimension pageTitle = new Dimension().setName("ga:pageTitle");
-
-        // 정렬기준 설정
-        List<OrderBy> orderBys = new ArrayList<>();
-        OrderBy orderBy = new OrderBy().setFieldName("ga:adsenseRevenue")
-                .setSortOrder("descending");
-        orderBys.add(orderBy);
+        String[] metricsArray = {"pageviews", "adsenseRevenue", "adsenseAdsClicks"};
+        String[] dimensionsArray = {"ga:pageTitle"};
+        String[] orderByArray = {"adsenseRevenue"};
 
         // ReportRequest 객체 생성.
         ReportRequest request = new ReportRequest().setViewId(AnalyticsConnectionController.VIEW_ID)
-                .setDateRanges(Arrays.asList(dateRange))
-                .setMetrics(findMetrics)
-                .setDimensions(Arrays.asList(pageTitle))
-                .setPageSize(100)
-                .setOrderBys(orderBys);
+                                                   .setDateRanges(Arrays.asList(searchConditionService.SummaryDateRange(fromDate, toDate)))
+                                                   .setMetrics(searchConditionService.SummarySearchMetricsList(metricsArray))
+                                                   .setDimensions(searchConditionService.SummarySearchDimensionsList(dimensionsArray))
+                                                   .setPageSize(100000) // max size
+                                                   .setOrderBys(searchConditionService.SummaryOrderList(orderByArray));
 
         ArrayList<ReportRequest> requests = new ArrayList<>();
         requests.add(request);
